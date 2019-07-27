@@ -1,0 +1,14 @@
+/home/kevin/animal-adoption/bin/Debug/netcoreapp2.2/animal-adoption.deps.json
+/home/kevin/animal-adoption/bin/Debug/netcoreapp2.2/animal-adoption.runtimeconfig.json
+/home/kevin/animal-adoption/bin/Debug/netcoreapp2.2/animal-adoption.runtimeconfig.dev.json
+/home/kevin/animal-adoption/bin/Debug/netcoreapp2.2/animal-adoption.dll
+/home/kevin/animal-adoption/bin/Debug/netcoreapp2.2/animal-adoption.pdb
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.csprojAssemblyReference.cache
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.csproj.CoreCompileInputs.cache
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.RazorAssemblyInfo.cache
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.RazorAssemblyInfo.cs
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.AssemblyInfoInputs.cache
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.AssemblyInfo.cs
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.RazorTargetAssemblyInfo.cache
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.dll
+/home/kevin/animal-adoption/obj/Debug/netcoreapp2.2/animal-adoption.pdb
