@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace animal_adoption.context
 {
-    public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext: DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             :base(options)
