@@ -29,6 +29,9 @@ namespace animal_adoption.Models
         [MaxLength(145)]
         public string address { get; set; }
 
+        [Required]
+        public int id_pet { get; set; }
+
         public List<Pet> Pets { get; set; }
 
         public List<Form> Forms { get; set; }

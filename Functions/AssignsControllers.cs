@@ -37,5 +37,25 @@ namespace animal_adoption.Functions
                 return null;
             }
         }
+
+        public static Adopter AssingAdopter (AdopterPost model, Adopter adopter){
+            adopter.name = model.name;
+            adopter.email = model.email;
+            adopter.identification = model.identification;
+            adopter.address = model.address;
+            adopter.id_pet = model.id_pet;
+            adopter.phone = model.phone;
+            return adopter;
+        }
+
+        public static Pet AssingPet (PetPost model, Pet pet){
+            pet.name = model.name;
+            pet.species = model.species;
+            pet.age = model.age;
+            pet.race = model.race;
+            pet.sex = model.sex;
+            pet.id_foundation = model.id_foundation;
+            return pet;
+        }
     }
 }

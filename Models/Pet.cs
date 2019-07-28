@@ -35,9 +35,6 @@ namespace animal_adoption.Models
 
         public Foundation Foundation { get; set; }
 
-        [Required]
-        public int id_adopter { get; set; }
-
         public Adopter Adopter { get; set; }
     }
 }

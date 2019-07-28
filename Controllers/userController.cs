@@ -95,11 +95,77 @@ namespace animal_adoption.Controllers
                 }
             });
         }
-        /* 
+        
         [HttpGet("[action]/{id}")]
 
         public async Task<ActionResult<User>> Get (int id){
+            User user = await db.User
+                        .Where(k => k.id_user == id)
+                        .FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return NotFound(new {
+                    ok = false,
+                    err = "The id " + id + " does not exist in the records"
+                });   
+            }
+            return Ok(new {
+                ok = true,
+                user
+            });
+        }
 
-        }*/
+        [HttpGet("[action]")]
+
+        public async Task<ActionResult<User>> List (){
+            List<User> users = await db.User.ToListAsync();
+            if (users == null)
+            {
+                return NotFound(new {
+                    ok = false,
+                    err = "There are no records in the database"
+                });
+            }
+            return Ok(new {
+                ok = true,
+                users
+            });
+        }
+
+        [HttpDelete("[action]/{id}")]
+
+        public async Task<ActionResult<User>> Delete(int id){
+            User user = await db.User
+                        .Where(k => k.id_user == id)
+                        .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return NotFound(new {
+                    ok = false,
+                    err = "The id " + id + " does not exist in the records"
+                });  
+            }
+
+            user.status = false;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (System.Exception err)
+            {
+                return BadRequest(new {
+                    ok = false,
+                    err = new {
+                        message = err.InnerException.Message
+                    }
+                });
+            }
+            return Ok(new {
+                ok = true,
+                user
+            });
+        }
     }
 }
