@@ -5,9 +5,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using animal_adoption.context;
+using animal_adoption.Functions;
 using animal_adoption.Models;
-using Microsoft.AspNetCore.Http;
+using animal_adoption.ModelViews;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace animal_adoption.Controllers
@@ -16,41 +19,81 @@ namespace animal_adoption.Controllers
     [ApiController]
     public class authController : ControllerBase
     {
-        [HttpPost, Route("login")]
-        public IActionResult Login([FromBody]LoginModel user)
+        private readonly ApplicationDbContext db;
+        public authController(ApplicationDbContext db)
         {
-            if (user == null)
+            this.db = db;
+        }
+
+        [HttpPost("[action]")]
+
+        public async Task<ActionResult<User>> Login ([FromBody] Login model){
+            if (model == null)
             {
                 return BadRequest("Invalid client request");
             }
- 
-            if (user.UserName == "johndoe" && user.Password == "def@123")
+
+            User user = await db.User
+                .Where(k => k.email == model.email)
+                .FirstOrDefaultAsync();
+        
+            if (user == null)
             {
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
- 
-                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
- 
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Role, "Manager")
-                };
- 
-            var tokeOptions = new JwtSecurityToken(
-                issuer: "http://localhost:5001",
-                audience: "http://localhost:5001",
-                claims: claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: signinCredentials
-            );
- 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-            return Ok(new { token = tokenString });
+                return NotFound(new {
+                    ok = false,
+                    message = "The username or password is incorrect"
+                });
             }
-        else
+
+            if (Encrypt.Decrypt(user.password) != model.password)
+            {
+                return Unauthorized(new {
+                    ok = false,
+                    message = "The username or password is incorrect"
+                });
+            }
+ 
+            if (user.role == "ADMIN")
+            {
+                string tokenString = generateToken(user,"ADMIN");
+                return Ok(new { token = tokenString });
+            }
+
+            else if(user.role == "USER"){
+                string tokenString = generateToken(user,"USER");
+                return Ok(new { token = tokenString }); 
+            }
+            else{
+                return BadRequest(new {
+                    ok = false,
+                    err = "Valid user roles are USER or ADMIN"
+                });
+            }
+            
+        }
+
+        private string generateToken (User user, string role){
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("V5auRHrgNThK31fYLnOvyMj0sCmkBXzZ"));
+        var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+        var claims = new List<Claim>
         {
-            return Unauthorized();
-        }
-        }
+            new Claim(ClaimTypes.Name, user.name),
+            new Claim(ClaimTypes.Role, role),
+            new Claim(ClaimTypes.Email, user.email)
+        };
+            
+        var tokeOptions = new JwtSecurityToken(
+            issuer: "http://localhost:5001",
+            audience: "http://localhost:5001",
+            claims: claims,
+            expires: DateTime.Now.AddHours(1),
+            signingCredentials: signinCredentials
+        );
+ 
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+        return tokenString;
     }
+    
+    }
+
 }

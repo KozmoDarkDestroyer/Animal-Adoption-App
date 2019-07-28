@@ -94,7 +94,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpGet("[action]/{id}"),Authorize(Roles = "Manager")]
+        [HttpGet("[action]/{id}"),/* Authorize(Roles = "Manager") */]
 
         public async Task<ActionResult<Foundation>> Get (int id){
 

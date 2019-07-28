@@ -26,13 +26,18 @@ namespace animal_adoption.context
                 
             modelBuilder.Entity<Foundation>()
                 .HasIndex(k => k.email)
-                .IsUnique();    
+                .IsUnique(); 
+
+            modelBuilder.Entity<User>()
+                .HasIndex(k => k.email)
+                .IsUnique();   
         }
 
         public DbSet<Pet> Pet { get; set; }
         public DbSet<Foundation> Foundation { get; set; }
         public DbSet<Adopter> Adopter { get; set; }
         public DbSet<Form> Form { get; set; }
+        public DbSet<User> User { get; set; }
 
     }
 }
