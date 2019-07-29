@@ -129,5 +129,39 @@ namespace animal_adoption.Controllers
                 pet
             });
         }
+
+        [HttpDelete("[action]")]
+
+        public async Task<ActionResult<Pet>> Delete (int id){
+            Pet pet = await db.Pet
+                      .Where(k => k.id_pet == id)
+                      .FirstOrDefaultAsync();
+            if (pet == null)
+            {
+                return NotFound(new {
+                    ok = false,
+                    err = "The id " + id + " does not exist in the records"
+                });
+            }
+            db.Pet.Remove(pet);
+
+            try
+            {
+                await db.SaveChangesAsync();   
+            }
+            catch (System.Exception err)
+            {
+                return BadRequest(new {
+                    ok = false,
+                    err = new {
+                        message = err.InnerException.Message
+                    }
+                });
+            }
+            return Ok(new {
+                ok = true,
+                pet
+            });
+        }
     }
 }

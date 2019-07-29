@@ -9,8 +9,12 @@ namespace animal_adoption.Models
         public int id_form { get; set; }
 
         [Required]
+        [MaxLength(50)]
+        public string name { get; set; }
+
+        [Required]
         [MaxLength(500)]
-        public string adotion_form { get; set; }
+        public string report { get; set; }
 
         [Required]
         public int id_adopter { get; set; }

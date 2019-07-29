@@ -9,8 +9,8 @@ using animal_adoption.context;
 namespace animal_adoption.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190727223249_animal-adoption")]
-    partial class animaladoption
+    [Migration("20190728182921_Animal_Adoption")]
+    partial class Animal_Adoption
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,8 @@ namespace animal_adoption.Migrations
                         .IsRequired()
                         .HasMaxLength(150);
 
+                    b.Property<int>("id_pet");
+
                     b.Property<string>("identification")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -51,6 +53,9 @@ namespace animal_adoption.Migrations
                     b.HasIndex("email")
                         .IsUnique();
 
+                    b.HasIndex("id_pet")
+                        .IsUnique();
+
                     b.HasIndex("identification")
                         .IsUnique();
 
@@ -63,11 +68,15 @@ namespace animal_adoption.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("adotion_form")
+                    b.Property<int>("id_adopter");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("report")
                         .IsRequired()
                         .HasMaxLength(500);
-
-                    b.Property<int>("id_adopter");
 
                     b.HasKey("id_form");
 
@@ -118,8 +127,6 @@ namespace animal_adoption.Migrations
 
                     b.Property<int>("age");
 
-                    b.Property<int>("id_adopter");
-
                     b.Property<int>("id_foundation");
 
                     b.Property<string>("img")
@@ -142,8 +149,6 @@ namespace animal_adoption.Migrations
                         .HasMaxLength(6);
 
                     b.HasKey("id_pet");
-
-                    b.HasIndex("id_adopter");
 
                     b.HasIndex("id_foundation");
 
@@ -184,6 +189,14 @@ namespace animal_adoption.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("animal_adoption.Models.Adopter", b =>
+                {
+                    b.HasOne("animal_adoption.Models.Pet", "Pet")
+                        .WithOne("Adopter")
+                        .HasForeignKey("animal_adoption.Models.Adopter", "id_pet")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("animal_adoption.Models.Form", b =>
                 {
                     b.HasOne("animal_adoption.Models.Adopter", "Adopter")
@@ -194,11 +207,6 @@ namespace animal_adoption.Migrations
 
             modelBuilder.Entity("animal_adoption.Models.Pet", b =>
                 {
-                    b.HasOne("animal_adoption.Models.Adopter", "Adopter")
-                        .WithMany("Pets")
-                        .HasForeignKey("id_adopter")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("animal_adoption.Models.Foundation", "Foundation")
                         .WithMany("Pets")
                         .HasForeignKey("id_foundation")

@@ -3,27 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace animal_adoption.Migrations
 {
-    public partial class animaladoption : Migration
+    public partial class Animal_Adoption : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Adopter",
-                columns: table => new
-                {
-                    id_adopter = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(maxLength: 45, nullable: false),
-                    identification = table.Column<string>(maxLength: 50, nullable: false),
-                    phone = table.Column<string>(maxLength: 45, nullable: false),
-                    email = table.Column<string>(maxLength: 150, nullable: false),
-                    address = table.Column<string>(maxLength: 145, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Adopter", x => x.id_adopter);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Foundation",
                 columns: table => new
@@ -60,12 +43,62 @@ namespace animal_adoption.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Pet",
+                columns: table => new
+                {
+                    id_pet = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    species = table.Column<string>(maxLength: 6, nullable: false),
+                    race = table.Column<string>(maxLength: 45, nullable: false),
+                    age = table.Column<int>(nullable: false),
+                    name = table.Column<string>(maxLength: 45, nullable: false),
+                    sex = table.Column<string>(maxLength: 15, nullable: false),
+                    img = table.Column<string>(maxLength: 500, nullable: true),
+                    id_foundation = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pet", x => x.id_pet);
+                    table.ForeignKey(
+                        name: "FK_Pet_Foundation_id_foundation",
+                        column: x => x.id_foundation,
+                        principalTable: "Foundation",
+                        principalColumn: "id_foundation",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Adopter",
+                columns: table => new
+                {
+                    id_adopter = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(maxLength: 45, nullable: false),
+                    identification = table.Column<string>(maxLength: 50, nullable: false),
+                    phone = table.Column<string>(maxLength: 45, nullable: false),
+                    email = table.Column<string>(maxLength: 150, nullable: false),
+                    address = table.Column<string>(maxLength: 145, nullable: false),
+                    id_pet = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Adopter", x => x.id_adopter);
+                    table.ForeignKey(
+                        name: "FK_Adopter_Pet_id_pet",
+                        column: x => x.id_pet,
+                        principalTable: "Pet",
+                        principalColumn: "id_pet",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Form",
                 columns: table => new
                 {
                     id_form = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    adotion_form = table.Column<string>(maxLength: 500, nullable: false),
+                    name = table.Column<string>(maxLength: 50, nullable: false),
+                    report = table.Column<string>(maxLength: 500, nullable: false),
                     id_adopter = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -79,42 +112,16 @@ namespace animal_adoption.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Pet",
-                columns: table => new
-                {
-                    id_pet = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    species = table.Column<string>(maxLength: 6, nullable: false),
-                    race = table.Column<string>(maxLength: 45, nullable: false),
-                    age = table.Column<int>(nullable: false),
-                    name = table.Column<string>(maxLength: 45, nullable: false),
-                    sex = table.Column<string>(maxLength: 15, nullable: false),
-                    img = table.Column<string>(maxLength: 500, nullable: true),
-                    id_foundation = table.Column<int>(nullable: false),
-                    id_adopter = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pet", x => x.id_pet);
-                    table.ForeignKey(
-                        name: "FK_Pet_Adopter_id_adopter",
-                        column: x => x.id_adopter,
-                        principalTable: "Adopter",
-                        principalColumn: "id_adopter",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Pet_Foundation_id_foundation",
-                        column: x => x.id_foundation,
-                        principalTable: "Foundation",
-                        principalColumn: "id_foundation",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Adopter_email",
                 table: "Adopter",
                 column: "email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Adopter_id_pet",
+                table: "Adopter",
+                column: "id_pet",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -135,11 +142,6 @@ namespace animal_adoption.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pet_id_adopter",
-                table: "Pet",
-                column: "id_adopter");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pet_id_foundation",
                 table: "Pet",
                 column: "id_foundation");
@@ -157,13 +159,13 @@ namespace animal_adoption.Migrations
                 name: "Form");
 
             migrationBuilder.DropTable(
-                name: "Pet");
-
-            migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
                 name: "Adopter");
+
+            migrationBuilder.DropTable(
+                name: "Pet");
 
             migrationBuilder.DropTable(
                 name: "Foundation");

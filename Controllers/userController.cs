@@ -90,6 +90,7 @@ namespace animal_adoption.Controllers
                 ok = true,
                 user = new {
                     user.name,
+                    user.email,
                     user.role,
                     user.status
                 }
@@ -111,7 +112,14 @@ namespace animal_adoption.Controllers
             }
             return Ok(new {
                 ok = true,
-                user
+                user = new {
+                    user.name,
+                    user.email,
+                    user.img,
+                    user.id_user,
+                    user.role,
+                    user.status
+                }
             });
         }
 
@@ -126,9 +134,17 @@ namespace animal_adoption.Controllers
                     err = "There are no records in the database"
                 });
             }
+
             return Ok(new {
                 ok = true,
-                users
+                users = users.Select(k => new {
+                   name = k.name,
+                   email = k.email,
+                   id_user = k.id_user,
+                   role = k.role,
+                   status = k.status,
+                   img = k.img 
+                })
             });
         }
 
@@ -164,7 +180,13 @@ namespace animal_adoption.Controllers
             }
             return Ok(new {
                 ok = true,
-                user
+                user = new {
+                    user.name,
+                    user.email,
+                    user.id_user,
+                    user.role,
+                    user.status
+                }
             });
         }
     }

@@ -32,8 +32,8 @@ namespace animal_adoption.Models
         [Required]
         public int id_pet { get; set; }
 
-        public List<Pet> Pets { get; set; }
-
+        public Pet Pet { get; set; }
+        
         public List<Form> Forms { get; set; }
     }
 }
