@@ -66,19 +66,43 @@ namespace animal_adoption.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("age_children")
+                        .HasMaxLength(50);
+
                     b.Property<int>("id_adopter");
 
                     b.Property<string>("name")
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("report")
+                    b.Property<int>("number_adults");
+
+                    b.Property<int>("number_children");
+
+                    b.Property<string>("pet_race")
                         .IsRequired()
-                        .HasMaxLength(500);
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("pet_status_check");
+
+                    b.Property<string>("pets_before")
+                        .IsRequired()
+                        .HasMaxLength(75);
+
+                    b.Property<string>("rason_adoption")
+                        .IsRequired()
+                        .HasMaxLength(150);
+
+                    b.Property<string>("report");
+
+                    b.Property<string>("responsibility_pet")
+                        .IsRequired()
+                        .HasMaxLength(150);
 
                     b.HasKey("id_form");
 
-                    b.HasIndex("id_adopter");
+                    b.HasIndex("id_adopter")
+                        .IsUnique();
 
                     b.ToTable("Form");
                 });
@@ -198,8 +222,8 @@ namespace animal_adoption.Migrations
             modelBuilder.Entity("animal_adoption.Models.Form", b =>
                 {
                     b.HasOne("animal_adoption.Models.Adopter", "Adopter")
-                        .WithMany("Forms")
-                        .HasForeignKey("id_adopter")
+                        .WithOne("Form")
+                        .HasForeignKey("animal_adoption.Models.Form", "id_adopter")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

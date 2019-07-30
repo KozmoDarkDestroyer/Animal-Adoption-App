@@ -23,7 +23,7 @@ namespace animal_adoption.Controllers
             this.db = db;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost("[action]"),Authorize(Roles = "ADMIN")]
 
         public async Task<ActionResult<FoundationPost>> Create([FromBody] FoundationPost model)
         {
@@ -53,7 +53,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpPut("[action]/{id}")]
+        [HttpPut("[action]/{id}"),Authorize(Roles = "ADMIN")]
 
         public async Task<ActionResult<FoundationPost>> Update ([FromBody] FoundationPost model, int id){
 
@@ -94,7 +94,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpGet("[action]/{id}"),/* Authorize(Roles = "Manager") */]
+        [HttpGet("[action]/{id}"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<Foundation>> Get (int id){
 
@@ -114,7 +114,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("[action]"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<Foundation>> List(){
 
@@ -132,7 +132,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpDelete("[action]/{id}")]
+        [HttpDelete("[action]/{id}"),Authorize(Roles = "ADMIN")]
 
         public async Task<ActionResult<Foundation>> Delete (int id){
 

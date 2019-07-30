@@ -6,6 +6,7 @@ using animal_adoption.context;
 using animal_adoption.Functions;
 using animal_adoption.Models;
 using animal_adoption.ModelViews;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ namespace animal_adoption.Controllers
             this.db = db;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost("[action]"),Authorize(Roles = "ADMIN,USER")]
         public async Task<ActionResult<Adopter>> Create ([FromBody] AdopterPost model){
             if (!ModelState.IsValid)
             {
@@ -49,7 +50,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpPut("[action]/{id}")]
+        [HttpPut("[action]/{id}"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<Adopter>> Update ([FromBody] AdopterPost model, int id){
             if (!ModelState.IsValid)
@@ -89,10 +90,11 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpGet("[action]/{id}")]
+        [HttpGet("[action]/{id}"),Authorize(Roles = "ADMIN,USER")]
         public async Task<ActionResult<Adopter>> Get (int id){
             Adopter adopter = await db.Adopter
-                              .Include(k => k.id_pet)
+                              .Include(k => k.Pet)
+                              .Include(k => k.Form)
                               .Where(k => k.id_adopter == id)
                               .FirstOrDefaultAsync();
             
@@ -110,10 +112,11 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("[action]"),Authorize(Roles = "ADMIN,USER")]
         public async Task<ActionResult<Adopter>> List(){
             List<Adopter> adopters = await db.Adopter
-                                    .Include(k => k.id_pet)
+                                    .Include(k => k.Pet)
+                                    .Include(k => k.Form)
                                     .ToListAsync();
 
             if (adopters.Count == 0)
@@ -129,7 +132,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpDelete("[action]/{id}")]
+        [HttpDelete("[action]/{id}"),Authorize(Roles = "ADMIN")]
 
         public async Task<ActionResult<Adopter>> Delete (int id){
             Adopter adopter = await db.Adopter

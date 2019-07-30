@@ -6,6 +6,7 @@ using animal_adoption.context;
 using animal_adoption.Functions;
 using animal_adoption.Models;
 using animal_adoption.ModelViews;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace animal_adoption.Controllers
             this.db = db;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost("[action]"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<Pet>> Create([FromBody] PetPost model){
             if (!ModelState.IsValid)
@@ -50,7 +51,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("[action]"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<Pet>> List (){
             List<Pet> pets = await db.Pet
@@ -69,7 +70,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpGet("[action]/{id}")]
+        [HttpGet("[action]/{id}"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<Pet>> Get (int id){
             Pet pet = await db.Pet
@@ -90,7 +91,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpPut("[action]/{id}")]
+        [HttpPut("[action]/{id}"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<Pet>> Update ([FromBody] PetPost model, int id){
             if (!ModelState.IsValid)
@@ -130,7 +131,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpDelete("[action]")]
+        [HttpDelete("[action]/{id}"),Authorize(Roles = "ADMIN")]
 
         public async Task<ActionResult<Pet>> Delete (int id){
             Pet pet = await db.Pet

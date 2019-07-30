@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace animal_adoption.Migrations
 {
-    public partial class Animal_Adoption : Migration
+    public partial class db : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -98,7 +98,15 @@ namespace animal_adoption.Migrations
                     id_form = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(maxLength: 50, nullable: false),
-                    report = table.Column<string>(maxLength: 500, nullable: false),
+                    number_adults = table.Column<int>(nullable: false),
+                    number_children = table.Column<int>(nullable: false),
+                    age_children = table.Column<int>(maxLength: 50, nullable: false),
+                    pet_race = table.Column<string>(maxLength: 50, nullable: false),
+                    pets_before = table.Column<string>(maxLength: 75, nullable: false),
+                    rason_adoption = table.Column<string>(maxLength: 150, nullable: false),
+                    responsibility_pet = table.Column<string>(maxLength: 150, nullable: false),
+                    pet_status_check = table.Column<bool>(nullable: false),
+                    report = table.Column<string>(nullable: true),
                     id_adopter = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -133,7 +141,8 @@ namespace animal_adoption.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Form_id_adopter",
                 table: "Form",
-                column: "id_adopter");
+                column: "id_adopter",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Foundation_email",

@@ -57,5 +57,19 @@ namespace animal_adoption.Functions
             pet.id_foundation = model.id_foundation;
             return pet;
         }
+
+        public static Form AssigForm (FormPost model, Form form){
+            form.name = model.name;
+            form.id_adopter = model.id_adopter;
+            form.number_adults = model.number_adults;
+            form.number_children = model.number_children;
+            form.pet_race = model.pet_race;
+            form.pet_status_check = model.pet_status_check;
+            form.pets_before = model.pets_before;
+            form.responsibility_pet = model.responsibility_pet;
+            form.age_children = model.age_children;
+            form.rason_adoption = model.rason_adoption;
+            return form;
+        }
     }
 }

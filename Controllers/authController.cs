@@ -56,12 +56,12 @@ namespace animal_adoption.Controllers
             if (user.role == "ADMIN")
             {
                 string tokenString = generateToken(user,"ADMIN");
-                return Ok(new { token = tokenString });
+                return Ok(new { Token = tokenString });
             }
 
             else if(user.role == "USER"){
                 string tokenString = generateToken(user,"USER");
-                return Ok(new { token = tokenString }); 
+                return Ok(new { Token = tokenString }); 
             }
             else{
                 return BadRequest(new {
@@ -73,13 +73,12 @@ namespace animal_adoption.Controllers
         }
 
         private string generateToken (User user, string role){
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("V5auRHrgNThK31fYLnOvyMj0sCmkBXzZ"));
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
         var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.name),
-            new Claim(ClaimTypes.Role, role),
-            new Claim(ClaimTypes.Email, user.email)
+            new Claim(ClaimTypes.Role, role)
         };
             
         var tokeOptions = new JwtSecurityToken(
@@ -95,5 +94,4 @@ namespace animal_adoption.Controllers
     }
     
     }
-
 }

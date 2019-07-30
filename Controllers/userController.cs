@@ -6,6 +6,7 @@ using animal_adoption.context;
 using animal_adoption.Functions;
 using animal_adoption.Models;
 using animal_adoption.ModelViews;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,7 +54,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpPut("[action]/{id}")]
+        [HttpPut("[action]/{id}"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<User>> Update ([FromBody] UserPost model, int id){
             if (!ModelState.IsValid)
@@ -97,7 +98,7 @@ namespace animal_adoption.Controllers
             });
         }
         
-        [HttpGet("[action]/{id}")]
+        [HttpGet("[action]/{id}"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<User>> Get (int id){
             User user = await db.User
@@ -123,7 +124,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("[action]"),Authorize(Roles = "ADMIN,USER")]
 
         public async Task<ActionResult<User>> List (){
             List<User> users = await db.User.ToListAsync();
@@ -148,7 +149,7 @@ namespace animal_adoption.Controllers
             });
         }
 
-        [HttpDelete("[action]/{id}")]
+        [HttpDelete("[action]/{id}"),Authorize(Roles = "ADMIN")]
 
         public async Task<ActionResult<User>> Delete(int id){
             User user = await db.User
